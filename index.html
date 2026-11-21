@@ -28,20 +28,8 @@ html[lang="ar"] {
   --display: "Readex Pro", "Geeza Pro", system-ui, sans-serif;
   --body: "IBM Plex Sans Arabic", "Geeza Pro", system-ui, sans-serif;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #16110E; --surface: #221A15; --plate: #2D231C; --ink: #F3EBE3; --muted: #B7A698;
-    --line: #3A2E25; --accent: #EB9545; --accent-ink: #1B120C; --leaf: #6FCB93; --leaf-soft: #1F3328;
-    --wa: #2DB86C; --wa-ink: #08170E; --danger: #F2867E; --danger-ink: #2A0E0B;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #16110E; --surface: #221A15; --plate: #2D231C; --ink: #F3EBE3; --muted: #B7A698;
-  --line: #3A2E25; --accent: #EB9545; --accent-ink: #1B120C; --leaf: #6FCB93; --leaf-soft: #1F3328;
-  --wa: #2DB86C; --wa-ink: #08170E; --danger: #F2867E; --danger-ink: #2A0E0B;
-  color-scheme: dark;
-}
+/* Always light, even when the phone is in dark mode. "only" also stops browsers from auto-darkening the page. */
+:root { color-scheme: light only; }
 
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
