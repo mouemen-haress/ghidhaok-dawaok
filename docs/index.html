@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>غذاؤك دواؤك</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=Readex+Pro:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap">
+<style>
+/* Layout: short hero, product cards on the left, order panel sticky on the right; stacks on phones with a bottom order bar. Cookies-and-milk palette. Arabic (RTL) by default, English toggle. */
+:root {
+  --bg: #EAF1F6;        /* milk */
+  --surface: #FFFFFF;
+  --plate: #DCE7EF;
+  --ink: #2E1C12;       /* cocoa */
+  --muted: #6E5D52;
+  --line: #D2DEE7;
+  --accent: #B85E17;    /* caramel */
+  --accent-ink: #FFFFFF;
+  --leaf: #2C7348;      /* nutrition note */
+  --leaf-soft: #DDEFE3;
+  --wa: #1A8F4C;
+  --wa-ink: #FFFFFF;
+  --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body: "Figtree", "Helvetica Neue", system-ui, sans-serif;
+  --naskh: "Amiri", "Geeza Pro", "Times New Roman", serif;
+}
+html[lang="ar"] {
+  --display: "Readex Pro", "Geeza Pro", system-ui, sans-serif;
+  --body: "IBM Plex Sans Arabic", "Geeza Pro", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #16110E; --surface: #221A15; --plate: #2D231C; --ink: #F3EBE3; --muted: #B7A698;
+    --line: #3A2E25; --accent: #EB9545; --accent-ink: #1B120C; --leaf: #6FCB93; --leaf-soft: #1F3328;
+    --wa: #2DB86C; --wa-ink: #08170E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #16110E; --surface: #221A15; --plate: #2D231C; --ink: #F3EBE3; --muted: #B7A698;
+  --line: #3A2E25; --accent: #EB9545; --accent-ink: #1B120C; --leaf: #6FCB93; --leaf-soft: #1F3328;
+  --wa: #2DB86C; --wa-ink: #08170E;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
+html[lang="ar"] body * { letter-spacing: 0 !important; } /* spacing breaks Arabic letter joining */
+body.has-bar { padding-bottom: 88px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Header */
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 18px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 800; font-size: 1.35rem; letter-spacing: -0.01em; }
+.brand svg { width: 34px; height: 34px; }
+#shopName { font-family: "Readex Pro", "Geeza Pro", system-ui, sans-serif; font-weight: 700; letter-spacing: 0; }
+.top-right { display: flex; align-items: center; gap: 14px; }
+.top-note { font-size: 0.85rem; color: var(--muted); font-weight: 500; }
+@media (max-width: 520px) { .top-note { display: none; } }
+.lang { border: 1.5px solid var(--ink); background: transparent; border-radius: 999px; padding: 7px 14px; font-weight: 600; font-size: 0.9rem; cursor: pointer; }
+.lang:hover { background: var(--ink); color: var(--surface); }
+.lang[lang="ar"] { font-family: "IBM Plex Sans Arabic", "Geeza Pro", system-ui, sans-serif; }
+.lang[lang="en"] { font-family: "Figtree", system-ui, sans-serif; }
+
+/* Hero */
+.hero { padding-block: 20px 36px; }
+.hero h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2.1rem, 5.4vw, 3.6rem); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 14px; max-width: 14ch; text-wrap: balance; }
+html[lang="ar"] .hero h1 { font-weight: 700; line-height: 1.3; max-width: 16ch; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero p { margin: 0; max-width: 52ch; color: var(--muted); font-size: 1.08rem; }
+.seal { display: inline-flex; align-items: center; gap: 10px; margin-top: 20px; padding-block: 6px; padding-inline: 6px 16px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-weight: 600; font-size: 0.95rem; }
+.seal .leaf { width: 32px; height: 32px; border-radius: 50%; background: var(--leaf-soft); color: var(--leaf); display: grid; place-items: center; flex: none; }
+.seal .leaf svg { width: 18px; height: 18px; }
+.seal strong { color: var(--leaf); font-weight: 700; }
+
+/* Hadith (always Arabic) */
+.hadith-band { padding-block: 0 36px; }
+.hadith { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 28px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; font-family: var(--naskh); letter-spacing: 0; }
+.hadith-intro { margin: 0; color: var(--muted); font-size: 1.1rem; line-height: 1.9; max-width: 60ch; }
+.hadith-text { margin: 0; color: var(--ink); font-size: clamp(1.7rem, 4.2vw, 2.5rem); font-weight: 700; line-height: 1.8; text-wrap: balance; }
+.hadith figcaption { display: flex; align-items: center; gap: 12px; color: var(--leaf); font-size: 1.05rem; font-weight: 700; }
+.hadith figcaption::before, .hadith figcaption::after { content: ""; width: 36px; height: 1px; background: var(--leaf); opacity: 0.5; }
+
+/* Layout */
+.layout { display: grid; grid-template-columns: 1fr; gap: 28px; padding-block: 0 64px; }
+.products { display: grid; grid-template-columns: 1fr; gap: 24px; min-width: 0; }
+@media (min-width: 640px) { .products { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 960px) {
+  .layout { grid-template-columns: minmax(0, 1fr) 360px; align-items: start; }
+  .panel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); }
+}
+
+/* Product cards */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+.art { aspect-ratio: 4 / 3; max-width: 100%; background: var(--plate); position: relative; overflow: hidden; }
+.art > * { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.art .tag { inset: auto; inset-block-start: 14px; inset-inline-start: 14px; width: auto; height: auto; background: var(--surface); color: var(--ink); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px; }
+.pop { animation: pop 0.45s cubic-bezier(.2, .9, .3, 1.3); }
+@keyframes pop { from { transform: scale(0.86) rotate(-12deg); opacity: 0.3; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .pop { animation: none; } }
+
+.card-body { padding: 20px 20px 22px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+.title-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.card h3 { font-family: var(--display); font-weight: 800; font-size: 1.55rem; letter-spacing: -0.015em; margin: 0; }
+html[lang="ar"] .card h3 { font-weight: 700; }
+.price { font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.desc { margin: 0; color: var(--muted); }
+.sup { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 0.85rem; font-weight: 600; color: var(--leaf); }
+.sup svg { width: 16px; height: 16px; flex: none; }
+
+.flavors { display: flex; flex-wrap: wrap; gap: 8px; border: 0; margin: 0; padding: 0; min-width: 0; }
+.flavors legend { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 0; margin-bottom: 8px; }
+.flavor { position: relative; }
+.flavor input { position: absolute; opacity: 0; pointer-events: none; }
+.flavor label { display: inline-flex; align-items: center; gap: 8px; padding-block: 6px; padding-inline: 6px 14px; border-radius: 999px; border: 1.5px solid var(--line); cursor: pointer; font-weight: 600; font-size: 0.92rem; transition: background 0.15s, border-color 0.15s, color 0.15s; }
+.flavor label:hover { border-color: var(--ink); }
+.flavor input:checked + label { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.flavor input:focus-visible + label { outline: 3px solid var(--accent); outline-offset: 2px; }
+.swatch { width: 24px; height: 24px; border-radius: 50%; flex: none; box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.14); }
+.count { min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-size: 0.75rem; font-weight: 700; display: inline-grid; place-items: center; }
+
+.actions { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+.btn-add { width: 100%; padding: 14px; border: 0; border-radius: 14px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.1s; }
+.btn-add:active { transform: scale(0.98); }
+.stepper { display: flex; align-items: center; justify-content: space-between; border: 1.5px solid var(--ink); border-radius: 14px; padding: 4px; }
+.stepper button { width: 44px; height: 44px; border: 0; border-radius: 10px; background: transparent; font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.stepper button:hover { background: var(--plate); }
+.stepper .qty { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Order panel */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 22px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.panel h2 { font-family: var(--display); font-weight: 800; font-size: 1.5rem; letter-spacing: -0.015em; margin: 0; }
+html[lang="ar"] .panel h2 { font-weight: 700; }
+.empty { margin: 0; color: var(--muted); padding: 18px; border: 1.5px dashed var(--line); border-radius: 16px; text-align: center; }
+.lines { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.line { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; align-items: center; }
+.line-name { font-weight: 600; }
+.line-name small { display: block; font-weight: 500; color: var(--muted); font-size: 0.85rem; }
+.line-total { font-weight: 700; font-variant-numeric: tabular-nums; text-align: end; }
+.mini { display: inline-flex; align-items: center; gap: 2px; border: 1px solid var(--line); border-radius: 10px; justify-self: start; }
+.mini button { width: 32px; height: 32px; border: 0; background: transparent; border-radius: 8px; cursor: pointer; font-size: 1.1rem; }
+.mini button:hover { background: var(--plate); }
+.mini span { min-width: 22px; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; font-size: 0.95rem; }
+.line-unit { font-size: 0.85rem; color: var(--muted); text-align: end; font-variant-numeric: tabular-nums; }
+.total { display: flex; justify-content: space-between; align-items: baseline; padding-top: 14px; border-top: 1.5px dashed var(--line); }
+.total span { font-weight: 600; }
+.total strong { font-family: var(--display); font-weight: 800; font-size: 1.7rem; font-variant-numeric: tabular-nums; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 0.85rem; font-weight: 600; }
+.field input, .field textarea { width: 100%; padding: 11px 12px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--bg); resize: vertical; }
+.field input:focus, .field textarea:focus { border-color: var(--ink); outline: none; }
+
+.wa-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: 14px; background: var(--wa); color: var(--wa-ink); font-weight: 700; font-size: 1.05rem; text-decoration: none; }
+.wa-btn svg { width: 22px; height: 22px; }
+.wa-btn[aria-disabled="true"] { opacity: 0.4; pointer-events: none; }
+.fine { margin: 0; font-size: 0.85rem; color: var(--muted); }
+.fine b { color: var(--ink); user-select: all; font-variant-numeric: tabular-nums; unicode-bidi: isolate; }
+
+details { border-top: 1px solid var(--line); padding-top: 12px; }
+summary { cursor: pointer; font-size: 0.9rem; font-weight: 600; }
+.preview { white-space: pre-wrap; font-size: 0.85rem; background: var(--bg); border-radius: 12px; padding: 12px; margin: 10px 0 8px; user-select: all; overflow-wrap: anywhere; }
+.copy { border: 1.5px solid var(--line); background: transparent; border-radius: 10px; padding: 8px 12px; font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+
+/* Phone order bar */
+.bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--ink); color: var(--surface); display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.bar-sum { font-weight: 600; font-variant-numeric: tabular-nums; display: flex; align-items: baseline; gap: 8px; }
+.bar-sum strong { font-family: var(--display); font-size: 1.2rem; }
+.bar a { background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 700; padding: 12px 18px; border-radius: 12px; }
+@media (min-width: 960px) { .bar { display: none; } body.has-bar { padding-bottom: 0; } }
+
+/* Nutritionist contact */
+.expert-band { padding-block: 0 48px; }
+.expert { background: var(--leaf-soft); border-radius: 24px; padding: 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 28px; scroll-margin-top: 20px; }
+.expert-id { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--leaf); color: var(--surface); display: grid; place-items: center; flex: none; font-family: var(--display); font-weight: 700; font-size: 1.6rem; }
+.expert-eyebrow { margin: 0; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--leaf); }
+.expert h2 { margin: 2px 0 4px; font-family: var(--display); font-weight: 700; font-size: 1.45rem; }
+.expert p.expert-text { margin: 0; color: var(--muted); }
+.social { display: flex; flex-wrap: wrap; gap: 10px; }
+.social a { display: inline-flex; align-items: center; gap: 8px; padding: 11px 16px; border-radius: 999px; background: var(--surface); color: var(--ink); border: 1px solid var(--line); text-decoration: none; font-weight: 600; transition: border-color 0.15s, color 0.15s; }
+.social a:hover { border-color: var(--leaf); color: var(--leaf); }
+.social svg { width: 20px; height: 20px; flex: none; }
+a.seal { color: inherit; text-decoration: none; }
+a.seal:hover { border-color: var(--leaf); }
+
+footer { padding-block: 0 40px; color: var(--muted); font-size: 0.85rem; }
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><span id="brandMark"></span><span id="shopName" lang="ar">غذاؤك دواؤك</span></div>
+    <div class="top-right">
+      <span class="top-note" data-t="topNote"></span>
+      <button class="lang" id="langBtn" type="button"></button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1 data-t-html="heroTitle"></h1>
+    <p data-t="heroText"></p>
+    <a class="seal" href="#nutritionist" id="sealLink"><span class="leaf" data-leaf></span><span data-t-html="sealText"></span></a>
+  </div>
+</section>
+
+<section class="hadith-band" lang="ar" dir="rtl">
+  <div class="wrap">
+    <figure class="hadith">
+      <p class="hadith-intro">عن أم المؤمنين عائشة رضي الله عنها أن رسول الله صلى الله عليه وسلم قال:</p>
+      <blockquote class="hadith-text">«التَّلبينةُ مُجِمَّةٌ لفُؤادِ المَريضِ، تُذهِبُ بَعضَ الحُزنِ»</blockquote>
+      <figcaption>(رواه البخاري ومسلم)</figcaption>
+    </figure>
+  </div>
+</section>
+
+<main class="wrap layout">
+  <div class="products">
+    <article class="card" id="cupCard">
+      <div class="art" id="cupArt"></div>
+      <div class="card-body">
+        <div class="title-row"><h3 id="cupName"></h3><span class="price" id="cupPrice"></span></div>
+        <p class="desc" id="cupDesc"></p>
+        <p class="sup"><span data-leaf></span><span data-t="supShort"></span></p>
+        <div class="actions" id="cupActions"></div>
+      </div>
+    </article>
+
+    <article class="card" id="bigCard">
+      <div class="art" id="bigArt"></div>
+      <div class="card-body">
+        <div class="title-row"><h3 id="bigName"></h3><span class="price" id="bigPrice"></span></div>
+        <p class="desc" data-t="bigDesc"></p>
+        <p class="sup"><span data-leaf></span><span data-t="supShort"></span></p>
+        <fieldset class="flavors" id="flavors"><legend data-t="flavor"></legend></fieldset>
+        <div class="actions" id="bigActions"></div>
+      </div>
+    </article>
+  </div>
+
+  <aside class="panel" id="order" aria-labelledby="orderTitle">
+    <h2 id="orderTitle" data-t="yourOrder"></h2>
+    <div id="orderLines"></div>
+    <div class="total"><span data-t="total"></span><strong id="total"></strong></div>
+    <div class="field">
+      <label for="custName" data-t="nameLabel"></label>
+      <input id="custName" type="text" autocomplete="name" data-t-ph="namePh">
+    </div>
+    <div class="field">
+      <label for="custNote" data-t="noteLabel"></label>
+      <textarea id="custNote" rows="2" data-t-ph="notePh"></textarea>
+    </div>
+    <a class="wa-btn" id="sendBtn" href="#" target="_blank" rel="noopener" aria-disabled="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>
+      <span data-t="send"></span>
+    </a>
+    <p class="fine" data-t="fine"></p>
+    <details>
+      <summary data-t="seeMsg"></summary>
+      <div class="preview" id="preview"></div>
+      <button class="copy" id="copyBtn" type="button"></button>
+    </details>
+  </aside>
+</main>
+
+<section class="expert-band">
+  <div class="wrap">
+    <div class="expert" id="nutritionist">
+      <div class="expert-id">
+        <span class="avatar" id="avatar"></span>
+        <div>
+          <p class="expert-eyebrow" data-t="expertEyebrow"></p>
+          <h2 id="expertName"></h2>
+          <p class="expert-text" data-t="expertText"></p>
+        </div>
+      </div>
+      <div class="social" id="social"></div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap" id="footerText"></div></footer>
+
+<div class="bar" id="bar" hidden>
+  <span class="bar-sum" id="barSum"></span>
+  <a href="#order" id="barLink" data-t="review"></a>
+</div>
+
+<script>
+/* ============ EDIT YOUR SHOP HERE ============ */
+const CONFIG = {
+  shopName: "غذاؤك دواؤك",
+  // WhatsApp number: country code + number, digits only (no +, spaces or dashes).
+  whatsappNumber: "96178904054",
+  currency: "$",          // symbol shown next to prices
+  currencyAfter: false,   // true shows "15 TND", false shows "$15"
+  nutritionist: { ar: "سكينة الحارس", en: "Sakina Al Haress" },
+  // Nutritionist's accounts. Leave empty until you have them.
+  nutritionistLinks: {
+    instagram: "https://www.instagram.com/sakina_haress/",
+    facebook: "https://www.facebook.com/people/%D8%BA%D8%B0%D8%A7%D8%A4%D9%83-%D8%AF%D9%88%D8%A7%D8%A4%D9%83-by-dietitian-sakina-faysal-haress/100046230496532/",
+    whatsapp: "96178904054" // digits only with country code
+  },
+  cup: {
+    name:   { ar: "كوب التلبينة", en: "Talbina Cup" },
+    detail: { ar: "5 قطع صغيرة", en: "5 mini pieces" },
+    label:  { ar: "5 قطع", en: "5 MINIS" },   // text printed on the placeholder cup drawing
+    price: 5,
+    image: ""             // put an image path here later, e.g. "images/cup.jpg"
+  },
+  big: {
+    name: { ar: "تلبينة كبيرة", en: "Big Talbina" },
+    price: 2,
+    flavors: [
+      { id: "fruits",    name: { ar: "فواكه مجففة",      en: "Dried Fruits" },    image: "", art: { dough: "#D6A86E", edge: "#AE7C42", chip: "#8E2F3C", chip2: "#E39B3B" } },
+      { id: "choco",     name: { ar: "حبيبات الشوكولا", en: "Chocolate Chips" }, image: "", art: { dough: "#D9A066", edge: "#B47538", chip: "#3B2116" } },
+      { id: "pistachio", name: { ar: "الفستق",          en: "Pistachio" },       image: "", art: { dough: "#C9C27C", edge: "#9C9450", chip: "#5F8A34", chip2: "#F4EEDC" } }
+    ]
+  }
+};
+
+const TEXT = {
+  ar: {
+    langBtn: "English", topNote: "الطلب عبر واتساب",
+    heroTitle: "كوب من قطع التلبينة الصغيرة أو تلبينة <em>كبيرة</em> واحدة.",
+    heroText: "اختر ما تريد من الأسفل، ثم أرسل طلبك إلينا عبر واتساب. سنرد عليك هناك لتأكيد الطلب.",
+    sealText: (n) => `تحت إشراف أخصائية التغذية <strong>${n}</strong>`,
+    supShort: (n) => `تحت إشراف أخصائية التغذية ${n}`,
+    cupDesc: "كوب فيه 5 قطع صغيرة: 3 قطع بالنكهات الثلاث (فواكه مجففة، حبيبات الشوكولا، الفستق) وقطعتان بنكهات متنوعة.",
+    bigDesc: "قطعة تلبينة كبيرة واحدة. اختر النكهة.",
+    flavor: "النكهة", add: "أضف إلى الطلب", inOrder: (n) => `${n} في الطلب`,
+    qty: "الكمية", removeOne: "إزالة واحدة", addOne: "إضافة واحدة",
+    yourOrder: "طلبك", empty: "لا يوجد شيء بعد. أضف كوب تلبينة أو تلبينة كبيرة لبدء طلبك.",
+    total: "المجموع", each: (p) => `${p} للقطعة`,
+    nameLabel: "اسمك", namePh: "مثلاً: سارة",
+    noteLabel: "ملاحظة (اختياري)", notePh: "وقت الاستلام، عنوان التوصيل…",
+    send: "أرسل الطلب عبر واتساب",
+    fine: "سيفتح واتساب ورسالة طلبك مكتوبة وجاهزة للإرسال.",
+    seeMsg: "عرض الرسالة", previewEmpty: "ستظهر رسالتك هنا بعد إضافة منتج.",
+    copy: "نسخ الرسالة", copied: "تم النسخ", selected: "تم التحديد، اضغط ⌘C",
+    review: "مراجعة الطلب", items: (n) => `${n} قطعة`,
+    footer: (s, y) => `© ${y} ${s}. يتم تأكيد الطلبات عبر واتساب.`,
+    msgHello: (s) => `مرحباً ${s}! أريد أن أطلب:`, msgTotal: "المجموع", msgName: "الاسم", msgNote: "ملاحظة",
+    expertEyebrow: "أخصائية التغذية", expertText: (n) => `تابع حسابات ${n} أو تواصل معها مباشرة.`,
+    instagram: "إنستغرام", facebook: "فيسبوك", whatsapp: "واتساب"
+  },
+  en: {
+    langBtn: "العربية", topNote: "Orders by WhatsApp",
+    heroTitle: "A cup of mini talbina or one <em>big</em> talbina.",
+    heroText: "Pick what you want below, then send your order to us on WhatsApp. We reply there to confirm it.",
+    sealText: (n) => `Under the supervision of nutritionist <strong>${n}</strong>`,
+    supShort: (n) => `Supervised by nutritionist ${n}`,
+    cupDesc: "A cup of 5 mini pieces: one of each flavor (dried fruits, chocolate chips, pistachio), plus 2 in assorted flavors.",
+    bigDesc: "One big talbina. Choose your flavor.",
+    flavor: "Flavor", add: "Add to order", inOrder: (n) => `${n} in order`,
+    qty: "quantity", removeOne: "Remove one", addOne: "Add one",
+    yourOrder: "Your order", empty: "Nothing here yet. Add a talbina cup or a big talbina to start your order.",
+    total: "Total", each: (p) => `${p} each`,
+    nameLabel: "Your name", namePh: "e.g. Sara",
+    noteLabel: "Note (optional)", notePh: "Pickup time, delivery address…",
+    send: "Send order on WhatsApp",
+    fine: "This opens WhatsApp with your order typed out, ready to send.",
+    seeMsg: "See the message", previewEmpty: "Your message appears here once you add something.",
+    copy: "Copy message", copied: "Copied", selected: "Selected, press ⌘C",
+    review: "Review order", items: (n) => `${n} item${n === 1 ? "" : "s"}`,
+    footer: (s, y) => `© ${y} ${s}. Orders are confirmed on WhatsApp.`,
+    msgHello: (s) => `Hello ${s}! I'd like to order:`, msgTotal: "Total", msgName: "Name", msgNote: "Note",
+    expertEyebrow: "Nutritionist", expertText: (n) => `Follow ${n} or get in touch directly.`,
+    instagram: "Instagram", facebook: "Facebook", whatsapp: "WhatsApp"
+  }
+};
+/* ============================================= */
+
+const $ = (id) => document.getElementById(id);
+let lang = "ar";
+try { if (localStorage.getItem("cookie-lang") === "en") lang = "en"; } catch (e) {}
+const t = (key, ...args) => { const v = TEXT[lang][key]; return typeof v === "function" ? v(...args) : v; };
+const L = (v) => (typeof v === "string" ? v : v[lang]);
+const money = (n) => CONFIG.currencyAfter ? `${n} ${CONFIG.currency}` : `${CONFIG.currency}${n}`;
+const ICONS = {
+  instagram: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>`,
+  facebook: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>`,
+  whatsapp: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>`
+};
+const LEAF = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>`;
+
+/* ---------- Placeholder cookie illustrations (replaced by real photos once image paths are set) ---------- */
+function rng(seed) {
+  return () => { seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+function blob(cx, cy, r, wobble, n, rand) {
+  const pts = [];
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2, rr = r * (1 + (rand() - 0.5) * wobble);
+    pts.push([cx + Math.cos(a) * rr, cy + Math.sin(a) * rr]);
+  }
+  const mid = (p, q) => [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
+  let m = mid(pts[n - 1], pts[0]), d = `M${m[0].toFixed(1)},${m[1].toFixed(1)}`;
+  for (let i = 0; i < n; i++) { const p = pts[i], q = mid(p, pts[(i + 1) % n]); d += `Q${p[0].toFixed(1)},${p[1].toFixed(1)} ${q[0].toFixed(1)},${q[1].toFixed(1)}`; }
+  return d + "Z";
+}
+function cookie(cx, cy, r, art, seed) {
+  const rand = rng(seed);
+  let s = `<ellipse cx="${cx}" cy="${cy + r * 0.12}" rx="${r * 1.02}" ry="${r * 0.98}" fill="rgba(40,20,10,.18)"/>`;
+  s += `<path d="${blob(cx, cy, r, 0.08, 22, rand)}" fill="${art.edge}"/>`;
+  s += `<path d="${blob(cx, cy - r * 0.03, r * 0.9, 0.07, 22, rand)}" fill="${art.dough}"/>`;
+  for (let i = 0; i < 4; i++) { // baked cracks
+    const a = rand() * Math.PI * 2, d0 = r * (0.2 + rand() * 0.4), x = cx + Math.cos(a) * d0, y = cy + Math.sin(a) * d0, len = r * 0.22;
+    s += `<path d="M${x},${y} q${len * 0.5},${-len * 0.3} ${len},${len * 0.1}" stroke="${art.edge}" stroke-width="${r * 0.025}" fill="none" stroke-linecap="round" opacity=".55"/>`;
+  }
+  const chips = Math.max(5, Math.round(r / 7));
+  for (let i = 0; i < chips; i++) {
+    const a = rand() * Math.PI * 2, d0 = Math.sqrt(rand()) * r * 0.72, cr = r * (0.07 + rand() * 0.05);
+    const fill = art.chip2 && i % 2 ? art.chip2 : art.chip;
+    s += `<path d="${blob(cx + Math.cos(a) * d0, cy + Math.sin(a) * d0, cr, 0.45, 7, rand)}" fill="${fill}"/>`;
+  }
+  return s;
+}
+function bigArt(f) {
+  return `<svg class="pop" viewBox="0 0 400 300" role="img" aria-label="${L(f.name)}">${cookie(200, 148, 112, f.art, f.id.length * 97 + 7)}</svg>`;
+}
+function cupArt() {
+  const fl = CONFIG.big.flavors, minis = [fl[0], fl[1], fl[2], fl[1], fl[0]].map((f) => f.art); // 3 flavors + 2 assorted
+  const spots = [[163, 112], [205, 96], [245, 114], [182, 138], [228, 140]];
+  let s = `<svg viewBox="0 0 400 300" role="img" aria-label="${L(CONFIG.cup.name)}">`;
+  s += `<ellipse cx="200" cy="282" rx="80" ry="9" fill="rgba(40,20,10,.15)"/>`;
+  spots.forEach(([x, y], i) => { s += cookie(x, y, 34, minis[i], 31 + i * 13); });
+  s += `<path d="M125,150 L275,150 L255,278 L145,278 Z" fill="#C99866"/>`;
+  s += `<path d="M132.2,193 L267.8,193 L263,224 L137,224 Z" fill="#F3E2CC"/>`;
+  s += `<text x="200" y="214" text-anchor="middle" font-family="Readex Pro, Bricolage Grotesque, system-ui, sans-serif" font-weight="700" font-size="16" ${lang === "en" ? 'letter-spacing="2"' : ""} fill="#4A2C18">${L(CONFIG.cup.label)}</text>`;
+  s += `<rect x="117" y="140" width="166" height="17" rx="7" fill="#B07E4F"/>`;
+  return s + `</svg>`;
+}
+const imgOr = (image, alt, fallback) => image ? `<img class="pop" src="${image}" alt="${alt}">` : fallback;
+
+/* ---------- State ---------- */
+let cart = { cup: 0, big: Object.fromEntries(CONFIG.big.flavors.map((f) => [f.id, 0])) };
+let selected = CONFIG.big.flavors[0].id;
+try {
+  const saved = JSON.parse(localStorage.getItem("cookie-cart") || "null");
+  if (saved) { cart.cup = saved.cup | 0; for (const id in cart.big) cart.big[id] = (saved.big && saved.big[id]) | 0; }
+} catch (e) {}
+const save = () => { try { localStorage.setItem("cookie-cart", JSON.stringify(cart)); } catch (e) {} };
+
+const flavorById = (id) => CONFIG.big.flavors.find((f) => f.id === id);
+function getQty(key) { return key === "cup" ? cart.cup : cart.big[key.split(":")[1]]; }
+function setQty(key, q) {
+  q = Math.max(0, Math.min(99, q));
+  if (key === "cup") cart.cup = q; else cart.big[key.split(":")[1]] = q;
+  save(); render();
+}
+function lines() {
+  const out = [];
+  if (cart.cup) out.push({ key: "cup", name: L(CONFIG.cup.name), sub: L(CONFIG.cup.detail), qty: cart.cup, unit: CONFIG.cup.price });
+  for (const f of CONFIG.big.flavors) if (cart.big[f.id]) out.push({ key: "big:" + f.id, name: L(CONFIG.big.name), sub: L(f.name), qty: cart.big[f.id], unit: CONFIG.big.price });
+  return out;
+}
+
+/* ---------- Rendering ---------- */
+function stepper(key, label) {
+  const q = getQty(key);
+  if (!q) return `<button class="btn-add" type="button" data-act="inc" data-key="${key}">${t("add")}</button>`;
+  return `<div class="stepper" role="group" aria-label="${label} ${t("qty")}">
+      <button type="button" data-act="dec" data-key="${key}" aria-label="${t("removeOne")}">−</button>
+      <span class="qty">${t("inOrder", q)}</span>
+      <button type="button" data-act="inc" data-key="${key}" aria-label="${t("addOne")}">+</button>
+    </div>`;
+}
+function renderFlavors() {
+  const fs = $("flavors");
+  fs.querySelectorAll(".flavor").forEach((n) => n.remove());
+  for (const f of CONFIG.big.flavors) {
+    const d = document.createElement("div");
+    d.className = "flavor";
+    const c = cart.big[f.id];
+    d.innerHTML = `<input type="radio" name="flavor" id="fl-${f.id}" value="${f.id}" ${f.id === selected ? "checked" : ""}>
+      <label for="fl-${f.id}"><span class="swatch" style="background:${f.art.dough}"></span>${L(f.name)}${c ? `<span class="count">${c}</span>` : ""}</label>`;
+    fs.appendChild(d);
+  }
+}
+function messageText() {
+  const ls = lines(), total = ls.reduce((s, l) => s + l.qty * l.unit, 0);
+  const rows = ls.map((l) => `• ${l.qty} × ${l.name} (${l.sub}) = ${money(l.qty * l.unit)}`);
+  const name = $("custName").value.trim(), note = $("custNote").value.trim();
+  const parts = [t("msgHello", CONFIG.shopName), ...rows, "", `${t("msgTotal")}: ${money(total)}`];
+  if (name) parts.push(`${t("msgName")}: ${name}`);
+  if (note) parts.push(`${t("msgNote")}: ${note}`);
+  return parts.join("\n");
+}
+function renderOrder() {
+  const ls = lines(), total = ls.reduce((s, l) => s + l.qty * l.unit, 0), count = ls.reduce((s, l) => s + l.qty, 0);
+  $("orderLines").innerHTML = ls.length
+    ? `<ul class="lines">${ls.map((l) => `<li class="line">
+          <span class="line-name">${l.name}<small>${l.sub}</small></span>
+          <span class="line-total">${money(l.qty * l.unit)}</span>
+          <span class="mini"><button type="button" data-act="dec" data-key="${l.key}" aria-label="${t("removeOne")} ${l.sub}">−</button><span>${l.qty}</span><button type="button" data-act="inc" data-key="${l.key}" aria-label="${t("addOne")} ${l.sub}">+</button></span>
+          <span class="line-unit">${t("each", money(l.unit))}</span>
+        </li>`).join("")}</ul>`
+    : `<p class="empty">${t("empty")}</p>`;
+  $("total").textContent = money(total);
+  const btn = $("sendBtn"), msg = messageText();
+  btn.setAttribute("aria-disabled", ls.length ? "false" : "true");
+  btn.href = ls.length ? `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}` : "#";
+  $("preview").textContent = ls.length ? msg : t("previewEmpty");
+  $("bar").hidden = !ls.length;
+  document.body.classList.toggle("has-bar", !!ls.length);
+  $("barSum").innerHTML = `<span>${t("items", count)}</span><strong>${money(total)}</strong>`;
+}
+function render() {
+  $("cupActions").innerHTML = stepper("cup", L(CONFIG.cup.name));
+  $("bigActions").innerHTML = stepper("big:" + selected, L(flavorById(selected).name));
+  renderFlavors();
+  renderOrder();
+}
+function renderBigArt() {
+  const f = flavorById(selected);
+  $("bigArt").innerHTML = imgOr(f.image, L(f.name), bigArt(f)) + `<span class="tag">${L(f.name)}</span>`;
+}
+function applyLang() {
+  const root = document.documentElement;
+  root.lang = lang;
+  root.dir = lang === "ar" ? "rtl" : "ltr";
+  const nut = L(CONFIG.nutritionist);
+  document.querySelectorAll("[data-t]").forEach((el) => (el.textContent = t(el.dataset.t, nut)));
+  document.querySelectorAll("[data-t-html]").forEach((el) => (el.innerHTML = t(el.dataset.tHtml, nut)));
+  document.querySelectorAll("[data-t-ph]").forEach((el) => (el.placeholder = t(el.dataset.tPh)));
+  const lb = $("langBtn");
+  lb.textContent = t("langBtn");
+  lb.lang = lang === "ar" ? "en" : "ar";
+  $("cupName").textContent = L(CONFIG.cup.name);
+  $("cupDesc").textContent = t("cupDesc");
+  $("bigName").textContent = L(CONFIG.big.name);
+  $("cupArt").innerHTML = imgOr(CONFIG.cup.image, L(CONFIG.cup.name), cupArt()) + `<span class="tag">${L(CONFIG.cup.detail)}</span>`;
+  $("copyBtn").textContent = t("copy");
+  $("footerText").textContent = t("footer", CONFIG.shopName, new Date().getFullYear());
+  $("expertName").textContent = nut;
+  $("avatar").textContent = nut.trim().charAt(0);
+  const links = CONFIG.nutritionistLinks;
+  const hrefs = { instagram: links.instagram, facebook: links.facebook, whatsapp: links.whatsapp && `https://wa.me/${links.whatsapp}` };
+  $("social").innerHTML = Object.keys(hrefs).map((k) => hrefs[k]
+    ? `<a href="${hrefs[k]}" target="_blank" rel="noopener">${ICONS[k]}${t(k)}</a>`
+    : `<a href="#nutritionist" data-empty>${ICONS[k]}${t(k)}</a>`).join("");
+  renderBigArt();
+  render();
+}
+
+/* ---------- Setup ---------- */
+document.title = CONFIG.shopName;
+$("shopName").textContent = CONFIG.shopName;
+$("brandMark").innerHTML = `<svg viewBox="0 0 40 40" aria-hidden="true">${cookie(20, 19, 16, CONFIG.big.flavors[0].art, 5)}</svg>`;
+document.querySelectorAll("[data-leaf]").forEach((el) => (el.innerHTML = LEAF));
+$("cupPrice").textContent = money(CONFIG.cup.price);
+$("bigPrice").textContent = money(CONFIG.big.price);
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-act]");
+  if (!b) return;
+  const key = b.dataset.key;
+  setQty(key, getQty(key) + (b.dataset.act === "inc" ? 1 : -1));
+});
+$("flavors").addEventListener("change", (e) => {
+  if (e.target.name !== "flavor") return;
+  selected = e.target.value;
+  renderBigArt();
+  $("bigActions").innerHTML = stepper("big:" + selected, L(flavorById(selected).name));
+});
+$("langBtn").addEventListener("click", () => {
+  lang = lang === "ar" ? "en" : "ar";
+  try { localStorage.setItem("cookie-lang", lang); } catch (e) {}
+  applyLang();
+});
+["custName", "custNote"].forEach((id) => $(id).addEventListener("input", renderOrder));
+$("social").addEventListener("click", (e) => { if (e.target.closest("[data-empty]")) e.preventDefault(); });
+$("sealLink").addEventListener("click", (e) => { e.preventDefault(); $("nutritionist").scrollIntoView({ behavior: "smooth", block: "center" }); });
+$("barLink").addEventListener("click", (e) => { e.preventDefault(); $("order").scrollIntoView({ behavior: "smooth", block: "start" }); });
+$("copyBtn").addEventListener("click", () => {
+  const done = () => { $("copyBtn").textContent = t("copied"); setTimeout(() => ($("copyBtn").textContent = t("copy")), 1600); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents($("preview")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $("copyBtn").textContent = t("selected"); };
+  try { navigator.clipboard.writeText(messageText()).then(done, fallback); } catch (err) { fallback(); }
+});
+
+applyLang();
+</script>
+</body>
+</html>
