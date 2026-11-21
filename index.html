@@ -185,6 +185,9 @@ summary { cursor: pointer; font-size: 0.9rem; font-weight: 600; }
   padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
 .bar-sum { font-weight: 600; font-variant-numeric: tabular-nums; display: flex; align-items: baseline; gap: 8px; }
 .bar-sum strong { font-family: var(--display); font-size: 1.2rem; }
+.bar-actions { display: flex; align-items: center; gap: 10px; }
+.bar .clear-btn { color: var(--surface); border-color: color-mix(in srgb, var(--surface) 35%, transparent); }
+.bar .clear-btn:hover { color: var(--danger); border-color: var(--danger); }
 .bar a { background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 700; padding: 12px 18px; border-radius: 12px; }
 @media (min-width: 960px) { .bar { display: none; } body.has-bar { padding-bottom: 0; } }
 
@@ -316,7 +319,10 @@ footer { padding-block: 0 40px; color: var(--muted); font-size: 0.85rem; }
 
 <div class="bar" id="bar" hidden>
   <span class="bar-sum" id="barSum"></span>
-  <a href="#order" id="barLink" data-t="review"></a>
+  <div class="bar-actions">
+    <button class="clear-btn" id="barClear" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <a href="#order" id="barLink" data-t="review"></a>
+  </div>
 </div>
 
 <script>
@@ -571,6 +577,7 @@ function applyLang() {
   $("cupArt").innerHTML = imgOr(CONFIG.cup.image, L(CONFIG.cup.name), cupArt()) + `<span class="tag">${L(CONFIG.cup.detail)}</span>`;
   $("copyBtn").textContent = t("copy");
   $("clearBtn").setAttribute("aria-label", t("clearAria"));
+  $("barClear").setAttribute("aria-label", t("clearAria"));
   $("footerText").textContent = t("footer", CONFIG.shopName, new Date().getFullYear());
   $("expertName").textContent = nut;
   $("avatar").textContent = nut.trim().charAt(0);
@@ -627,6 +634,7 @@ $("sendBtn").addEventListener("click", () => {
 });
 const dlg = $("clearDialog");
 $("clearBtn").addEventListener("click", () => dlg.showModal());
+$("barClear").addEventListener("click", () => dlg.showModal());
 $("clearNo").addEventListener("click", () => dlg.close());
 dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
 $("clearYes").addEventListener("click", () => { clearCart(); dlg.close(); });
