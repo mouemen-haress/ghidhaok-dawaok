@@ -623,15 +623,21 @@ $("langBtn").addEventListener("click", () => {
   applyLang();
 });
 ["custName", "custNote"].forEach((id) => $(id).addEventListener("input", renderOrder));
+function clearCart() {
+  cart.cup = 0;
+  for (const id in cart.big) cart.big[id] = 0;
+  save(); render();
+}
+// After WhatsApp opens with the order, empty the order. Delayed so the link opens with the full message first.
+$("sendBtn").addEventListener("click", () => {
+  if (!lines().length) return;
+  setTimeout(() => { $("custNote").value = ""; clearCart(); }, 400);
+});
 const dlg = $("clearDialog");
 $("clearBtn").addEventListener("click", () => dlg.showModal());
 $("clearNo").addEventListener("click", () => dlg.close());
 dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
-$("clearYes").addEventListener("click", () => {
-  cart.cup = 0;
-  for (const id in cart.big) cart.big[id] = 0;
-  save(); render(); dlg.close();
-});
+$("clearYes").addEventListener("click", () => { clearCart(); dlg.close(); });
 $("social").addEventListener("click", (e) => { if (e.target.closest("[data-empty]")) e.preventDefault(); });
 $("sealLink").addEventListener("click", (e) => { e.preventDefault(); $("nutritionist").scrollIntoView({ behavior: "smooth", block: "center" }); });
 $("barLink").addEventListener("click", (e) => { e.preventDefault(); $("order").scrollIntoView({ behavior: "smooth", block: "start" }); });
