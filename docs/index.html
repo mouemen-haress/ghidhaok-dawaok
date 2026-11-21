@@ -24,6 +24,8 @@
   --leaf-soft: #DDEFE3;
   --wa: #1A8F4C;
   --wa-ink: #FFFFFF;
+  --danger: #B3261E;
+  --danger-ink: #FFFFFF;
   --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
   --body: "Figtree", "Helvetica Neue", system-ui, sans-serif;
   --naskh: "Amiri", "Geeza Pro", "Times New Roman", serif;
@@ -36,14 +38,14 @@ html[lang="ar"] {
   :root:not([data-theme="light"]) {
     --bg: #16110E; --surface: #221A15; --plate: #2D231C; --ink: #F3EBE3; --muted: #B7A698;
     --line: #3A2E25; --accent: #EB9545; --accent-ink: #1B120C; --leaf: #6FCB93; --leaf-soft: #1F3328;
-    --wa: #2DB86C; --wa-ink: #08170E;
+    --wa: #2DB86C; --wa-ink: #08170E; --danger: #F2867E; --danger-ink: #2A0E0B;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #16110E; --surface: #221A15; --plate: #2D231C; --ink: #F3EBE3; --muted: #B7A698;
   --line: #3A2E25; --accent: #EB9545; --accent-ink: #1B120C; --leaf: #6FCB93; --leaf-soft: #1F3328;
-  --wa: #2DB86C; --wa-ink: #08170E;
+  --wa: #2DB86C; --wa-ink: #08170E; --danger: #F2867E; --danger-ink: #2A0E0B;
   color-scheme: dark;
 }
 
@@ -142,6 +144,17 @@ html[lang="ar"] .card h3 { font-weight: 700; }
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 22px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
 .panel h2 { font-family: var(--display); font-weight: 800; font-size: 1.5rem; letter-spacing: -0.015em; margin: 0; }
 html[lang="ar"] .panel h2 { font-weight: 700; }
+.panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.clear-btn { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--line); background: transparent; color: var(--muted); display: grid; place-items: center; cursor: pointer; flex: none; }
+.clear-btn:hover { border-color: var(--danger); color: var(--danger); }
+.clear-btn svg { width: 18px; height: 18px; }
+dialog.confirm { border: 0; border-radius: 20px; padding: 24px; width: min(360px, calc(100vw - 32px)); background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); }
+dialog.confirm::backdrop { background: rgba(20, 12, 8, 0.55); }
+dialog.confirm h3 { margin: 0 0 8px; font-family: var(--display); font-weight: 700; font-size: 1.3rem; }
+dialog.confirm p { margin: 0 0 20px; color: var(--muted); }
+.confirm-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+.btn-ghost { padding: 11px 16px; border-radius: 12px; border: 1.5px solid var(--line); background: transparent; font-weight: 600; cursor: pointer; }
+.btn-danger { padding: 11px 16px; border-radius: 12px; border: 0; background: var(--danger); color: var(--danger-ink); font-weight: 700; cursor: pointer; }
 .empty { margin: 0; color: var(--muted); padding: 18px; border: 1.5px dashed var(--line); border-radius: 16px; text-align: center; }
 .lines { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
 .line { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; align-items: center; }
@@ -255,7 +268,10 @@ footer { padding-block: 0 40px; color: var(--muted); font-size: 0.85rem; }
   </div>
 
   <aside class="panel" id="order" aria-labelledby="orderTitle">
-    <h2 id="orderTitle" data-t="yourOrder"></h2>
+    <div class="panel-head">
+      <h2 id="orderTitle" data-t="yourOrder"></h2>
+      <button class="clear-btn" id="clearBtn" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
     <div id="orderLines"></div>
     <div class="total"><span data-t="total"></span><strong id="total"></strong></div>
     <div class="field">
@@ -296,6 +312,15 @@ footer { padding-block: 0 40px; color: var(--muted); font-size: 0.85rem; }
 </section>
 
 <footer><div class="wrap" id="footerText"></div></footer>
+
+<dialog class="confirm" id="clearDialog" aria-labelledby="clearTitle">
+  <h3 id="clearTitle" data-t="clearTitle"></h3>
+  <p data-t="clearText"></p>
+  <div class="confirm-actions">
+    <button class="btn-ghost" id="clearNo" type="button" data-t="cancel"></button>
+    <button class="btn-danger" id="clearYes" type="button" data-t="clearYes"></button>
+  </div>
+</dialog>
 
 <div class="bar" id="bar" hidden>
   <span class="bar-sum" id="barSum"></span>
@@ -340,6 +365,7 @@ const TEXT = {
     langBtn: "English", topNote: "الطلب عبر واتساب",
     heroTitle: "كوب من قطع التلبينة الصغيرة أو تلبينة <em>كبيرة</em> واحدة.",
     contact: "تواصل معنا",
+    clearAria: "حذف الطلب", clearTitle: "حذف الطلب؟", clearText: "سيتم حذف كل المنتجات من طلبك.", clearYes: "نعم، احذف الطلب", cancel: "إلغاء",
     heroText: '<a href="#products" data-scroll>اختر ما تريد من الأسفل</a>، ثم أرسل طلبك إلينا عبر واتساب. سنرد عليك هناك لتأكيد الطلب.',
     sealText: (n) => `تحت إشراف أخصائية التغذية <strong>${n}</strong>`,
     supShort: (n) => `تحت إشراف أخصائية التغذية ${n}`,
@@ -365,6 +391,7 @@ const TEXT = {
     langBtn: "العربية", topNote: "Orders by WhatsApp",
     heroTitle: "A cup of mini talbina or one <em>big</em> talbina.",
     contact: "Contact us",
+    clearAria: "Delete order", clearTitle: "Delete your order?", clearText: "This removes everything from your order.", clearYes: "Yes, delete it", cancel: "Cancel",
     heroText: '<a href="#products" data-scroll>Pick what you want below</a>, then send your order to us on WhatsApp. We reply there to confirm it.',
     sealText: (n) => `Under the supervision of nutritionist <strong>${n}</strong>`,
     supShort: (n) => `Supervised by nutritionist ${n}`,
@@ -521,6 +548,7 @@ function renderOrder() {
   btn.href = ls.length ? `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}` : "#";
   $("preview").textContent = ls.length ? msg : t("previewEmpty");
   $("bar").hidden = !ls.length;
+  $("clearBtn").hidden = !ls.length;
   document.body.classList.toggle("has-bar", !!ls.length);
   $("barSum").innerHTML = `<span>${t("items", count)}</span><strong>${money(total)}</strong>`;
 }
@@ -550,6 +578,7 @@ function applyLang() {
   $("bigName").textContent = L(CONFIG.big.name);
   $("cupArt").innerHTML = imgOr(CONFIG.cup.image, L(CONFIG.cup.name), cupArt()) + `<span class="tag">${L(CONFIG.cup.detail)}</span>`;
   $("copyBtn").textContent = t("copy");
+  $("clearBtn").setAttribute("aria-label", t("clearAria"));
   $("footerText").textContent = t("footer", CONFIG.shopName, new Date().getFullYear());
   $("expertName").textContent = nut;
   $("avatar").textContent = nut.trim().charAt(0);
@@ -594,6 +623,15 @@ $("langBtn").addEventListener("click", () => {
   applyLang();
 });
 ["custName", "custNote"].forEach((id) => $(id).addEventListener("input", renderOrder));
+const dlg = $("clearDialog");
+$("clearBtn").addEventListener("click", () => dlg.showModal());
+$("clearNo").addEventListener("click", () => dlg.close());
+dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+$("clearYes").addEventListener("click", () => {
+  cart.cup = 0;
+  for (const id in cart.big) cart.big[id] = 0;
+  save(); render(); dlg.close();
+});
 $("social").addEventListener("click", (e) => { if (e.target.closest("[data-empty]")) e.preventDefault(); });
 $("sealLink").addEventListener("click", (e) => { e.preventDefault(); $("nutritionist").scrollIntoView({ behavior: "smooth", block: "center" }); });
 $("barLink").addEventListener("click", (e) => { e.preventDefault(); $("order").scrollIntoView({ behavior: "smooth", block: "start" }); });
