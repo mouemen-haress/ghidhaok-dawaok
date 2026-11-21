@@ -57,6 +57,9 @@ button, input, textarea { font: inherit; color: inherit; }
 .top-right { display: flex; align-items: center; gap: 14px; }
 .top-note { font-size: 0.85rem; color: var(--muted); font-weight: 500; }
 @media (max-width: 520px) { .top-note { display: none; } }
+.nav-link { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; background: var(--leaf-soft); color: var(--leaf); font-weight: 600; font-size: 0.9rem; text-decoration: none; white-space: nowrap; }
+.nav-link:hover { background: var(--leaf); color: var(--surface); }
+.nav-link svg { width: 16px; height: 16px; flex: none; }
 .lang { border: 1.5px solid var(--ink); background: transparent; border-radius: 999px; padding: 7px 14px; font-weight: 600; font-size: 0.9rem; cursor: pointer; }
 .lang:hover { background: var(--ink); color: var(--surface); }
 .lang[lang="ar"] { font-family: "IBM Plex Sans Arabic", "Geeza Pro", system-ui, sans-serif; }
@@ -68,6 +71,8 @@ button, input, textarea { font: inherit; color: inherit; }
 html[lang="ar"] .hero h1 { font-weight: 700; line-height: 1.3; max-width: 16ch; }
 .hero h1 em { font-style: normal; color: var(--accent); }
 .hero p { margin: 0; max-width: 52ch; color: var(--muted); font-size: 1.08rem; }
+.hero p a { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.products { scroll-margin-top: 20px; }
 .seal { display: inline-flex; align-items: center; gap: 10px; margin-top: 20px; padding-block: 6px; padding-inline: 6px 16px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-weight: 600; font-size: 0.95rem; }
 .seal .leaf { width: 32px; height: 32px; border-radius: 50%; background: var(--leaf-soft); color: var(--leaf); display: grid; place-items: center; flex: none; }
 .seal .leaf svg { width: 18px; height: 18px; }
@@ -193,6 +198,7 @@ footer { padding-block: 0 40px; color: var(--muted); font-size: 0.85rem; }
     <div class="brand"><span id="brandMark"></span><span id="shopName" lang="ar">غذاؤك دواؤك</span></div>
     <div class="top-right">
       <span class="top-note" data-t="topNote"></span>
+      <a class="nav-link" href="#nutritionist" data-scroll><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg><span data-t="contact"></span></a>
       <button class="lang" id="langBtn" type="button"></button>
     </div>
   </div>
@@ -201,7 +207,7 @@ footer { padding-block: 0 40px; color: var(--muted); font-size: 0.85rem; }
 <section class="hero">
   <div class="wrap">
     <h1 data-t-html="heroTitle"></h1>
-    <p data-t="heroText"></p>
+    <p data-t-html="heroText"></p>
     <a class="seal" href="#nutritionist" id="sealLink"><span class="leaf" data-leaf></span><span data-t-html="sealText"></span></a>
   </div>
 </section>
@@ -217,7 +223,7 @@ footer { padding-block: 0 40px; color: var(--muted); font-size: 0.85rem; }
 </section>
 
 <main class="wrap layout">
-  <div class="products">
+  <div class="products" id="products">
     <article class="card" id="cupCard">
       <div class="art" id="cupArt"></div>
       <div class="card-body">
@@ -325,7 +331,8 @@ const TEXT = {
   ar: {
     langBtn: "English", topNote: "الطلب عبر واتساب",
     heroTitle: "كوب من قطع التلبينة الصغيرة أو تلبينة <em>كبيرة</em> واحدة.",
-    heroText: "اختر ما تريد من الأسفل، ثم أرسل طلبك إلينا عبر واتساب. سنرد عليك هناك لتأكيد الطلب.",
+    contact: "تواصل معنا",
+    heroText: '<a href="#products" data-scroll>اختر ما تريد من الأسفل</a>، ثم أرسل طلبك إلينا عبر واتساب. سنرد عليك هناك لتأكيد الطلب.',
     sealText: (n) => `تحت إشراف أخصائية التغذية <strong>${n}</strong>`,
     supShort: (n) => `تحت إشراف أخصائية التغذية ${n}`,
     cupDesc: "كوب فيه 5 قطع صغيرة: 3 قطع بالنكهات الثلاث (فواكه مجففة، حبيبات الشوكولا، الفستق) وقطعتان بنكهات متنوعة.",
@@ -349,7 +356,8 @@ const TEXT = {
   en: {
     langBtn: "العربية", topNote: "Orders by WhatsApp",
     heroTitle: "A cup of mini talbina or one <em>big</em> talbina.",
-    heroText: "Pick what you want below, then send your order to us on WhatsApp. We reply there to confirm it.",
+    contact: "Contact us",
+    heroText: '<a href="#products" data-scroll>Pick what you want below</a>, then send your order to us on WhatsApp. We reply there to confirm it.',
     sealText: (n) => `Under the supervision of nutritionist <strong>${n}</strong>`,
     supShort: (n) => `Supervised by nutritionist ${n}`,
     cupDesc: "A cup of 5 mini pieces: one of each flavor (dried fruits, chocolate chips, pistachio), plus 2 in assorted flavors.",
@@ -554,6 +562,12 @@ document.querySelectorAll("[data-leaf]").forEach((el) => (el.innerHTML = LEAF));
 $("cupPrice").textContent = money(CONFIG.cup.price);
 $("bigPrice").textContent = money(CONFIG.big.price);
 
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("a[data-scroll]");
+  if (!a) return;
+  e.preventDefault();
+  document.querySelector(a.getAttribute("href")).scrollIntoView({ behavior: "smooth", block: "start" });
+});
 document.addEventListener("click", (e) => {
   const b = e.target.closest("[data-act]");
   if (!b) return;
