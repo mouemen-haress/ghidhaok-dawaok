@@ -357,8 +357,8 @@ const CONFIG = {
   shopName: "غذاؤك دواؤك",
   // WhatsApp number: country code + number, digits only (no +, spaces or dashes).
   whatsappNumber: "96178904054",
-  currency: "$",          // symbol shown next to prices
-  currencyAfter: false,   // true shows "15 TND", false shows "$15"
+  currency: { ar: "ل.ل", en: "LBP" },  // symbol shown next to prices
+  currencyAfter: true,    // true shows "15 TND", false shows "$15"
   nutritionist: { ar: "سكينة الحارس", en: "Sakina Al Haress" },
   // Nutritionist's accounts. Leave empty until you have them.
   nutritionistLinks: {
@@ -370,12 +370,12 @@ const CONFIG = {
     name:   { ar: "كوب التلبينة", en: "Talbina Cup" },
     detail: { ar: "5 قطع صغيرة", en: "5 mini pieces" },
     label:  { ar: "5 قطع", en: "5 MINIS" },   // text printed on the placeholder cup drawing
-    price: 5,
+    price: 500000,
     image: ""             // put an image path here later, e.g. "images/cup.jpg"
   },
   big: {
     name: { ar: "تلبينة كبيرة", en: "Big Talbina" },
-    price: 2,
+    price: 250000,
     flavors: [
       { id: "fruits",    name: { ar: "فواكه مجففة",      en: "Dried Fruits" },    image: "", art: { dough: "#D6A86E", edge: "#AE7C42", chip: "#8E2F3C", chip2: "#E39B3B" } },
       { id: "choco",     name: { ar: "حبيبات الشوكولا", en: "Chocolate Chips" }, image: "", art: { dough: "#D9A066", edge: "#B47538", chip: "#3B2116" } },
@@ -449,7 +449,7 @@ let lang = "ar";
 try { if (localStorage.getItem("cookie-lang") === "en") lang = "en"; } catch (e) {}
 const t = (key, ...args) => { const v = TEXT[lang][key]; return typeof v === "function" ? v(...args) : v; };
 const L = (v) => (typeof v === "string" ? v : v[lang]);
-const money = (n) => CONFIG.currencyAfter ? `${n} ${CONFIG.currency}` : `${CONFIG.currency}${n}`;
+const money = (n) => { const v = n.toLocaleString("en-US"), c = L(CONFIG.currency); return CONFIG.currencyAfter ? `${v} ${c}` : `${c}${v}`; };
 const ICONS = {
   instagram: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>`,
   facebook: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>`,
@@ -604,6 +604,8 @@ function applyLang() {
   $("cupName").textContent = L(CONFIG.cup.name);
   $("cupDesc").textContent = t("cupDesc");
   $("bigName").textContent = L(CONFIG.big.name);
+  $("cupPrice").textContent = money(CONFIG.cup.price);
+  $("bigPrice").textContent = money(CONFIG.big.price);
   $("cupArt").innerHTML = imgOr(CONFIG.cup.image, L(CONFIG.cup.name), cupArt()) + `<span class="tag">${L(CONFIG.cup.detail)}</span>`;
   $("copyBtn").textContent = t("copy");
   $("clearBtn").setAttribute("aria-label", t("clearAria"));
@@ -625,8 +627,6 @@ document.title = CONFIG.shopName;
 $("shopName").textContent = CONFIG.shopName;
 $("brandMark").innerHTML = `<svg viewBox="0 0 40 40" aria-hidden="true">${cookie(20, 19, 16, CONFIG.big.flavors[0].art, 5)}</svg>`;
 document.querySelectorAll("[data-leaf]").forEach((el) => (el.innerHTML = LEAF));
-$("cupPrice").textContent = money(CONFIG.cup.price);
-$("bigPrice").textContent = money(CONFIG.big.price);
 
 document.addEventListener("click", (e) => {
   const a = e.target.closest("a[data-scroll]");
